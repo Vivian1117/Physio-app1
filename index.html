@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1f2933">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Physio App">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>物理治療部資訊 App</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+}
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+.index {
+    width: 300px;
+    background: #1f2933;
+    color: white;
+    padding: 1rem;
+}
+
+.index h2 {
+    margin-top: 0;
+}
+
+.index button {
+    width: 100%;
+    background: none;
+    border: none;
+    color: white;
+    padding: 0.7rem;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+.index button:hover {
+    background: #374151;
+}
+
+.content {
+    flex: 1;
+    padding: 2rem;
+    background: white;
+}
+
+.content h2 {
+    margin-top: 1.5rem;
+}
+
+hr {
+    margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+    .app {
+        flex-direction: column;
+    }
+    .index {
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js");
+  });
+}
+</script>
+
+<body>
+
+<div class="app">
+    <nav class="index">
+        <h2>📚 Index</h2>
+
+        <button onclick="loadContent('physioMission')">🏥 物理治療部：願景 / 核心價值 / 使命</button>
+        <button onclick="loadContent('physioRisk')">⚠️ 物理治療部：今年三大風險管理項目</button>
+        <button onclick="loadContent('hospitalRisk')">🏥 瑪嘉烈醫院：風險管理項目</button>
+        <button onclick="loadContent('fireNoPatient')">🔥 火警事故處理（無病人）</button>
+        <button onclick="loadContent('fireWithPatient')">🔥 火警事故處理（有病人）</button>
+        <button onclick="loadContent('vitalSigns')">🩺 病人正常生命表徵</button>
+        <button onclick="loadContent('acupunctureSafety')">🪡 針灸安全</button>
+    </nav>
+
+    <main class="content" id="content">
+        <h1>歡迎</h1>
+        <p>請從左邊 Index 選擇內容。</p>
+    </main>
+</div>
+
+<script>
+const data = {
+
+physioMission: {
+  title: "🏥 物理治療部：願景 / 核心價值 / 使命",
+  html: `
+    <h2>🌟 願景</h2>
+    <p>市民健康、員工開心、大眾信賴</p>
+
+    <h2>🌟 核心價值</h2>
+    <p>關懷病人、醫護同心</p>
+
+    <h2>🌟 使命</h2>
+    <p>提供優質而全面的服務、培訓醫護人才、推動創新與合作</p>
+  `
+},
+
+physioRisk: {
+  title: "⚠️ 物理治療部：今年三大風險管理項目",
+  html: `
+    <h2>🫀 心衰病情變化</h2>
+    <ul>
+      <li>留意呼吸、心跳、血壓、O₂</li>
+      <li>出現變化即停治療並通知醫護</li>
+    </ul>
+
+    <h2>💪 體力處理工傷</h2>
+    <ul>
+      <li>保持正確姿勢</li>
+      <li>使用輔助工具</li>
+      <li>雙人協作</li>
+      <li>定期 Manual Handling 培訓</li>
+    </ul>
+
+    <h2>⚠️ 病人跌倒</h2>
+    <ul>
+      <li>評估平衡及步行能力</li>
+      <li>高危病人需陪行或使用輔助工具</li>
+      <li>跌倒事件需即時報告及進行 RCA</li>
+    </ul>
+  `
+},
+
+hospitalRisk: {
+  title: "🏥 瑪嘉烈醫院：風險管理項目",
+  html: `
+    <h2>🔶 臨床</h2>
+    <ul>
+      <li>感染控制（減少 MDROs）</li>
+      <li>藥物安全（5 Rights、雙重核對）</li>
+      <li>跌倒預防</li>
+      <li>程序安全（核對表）</li>
+      <li>SBAR 交接及清晰紀錄</li>
+    </ul>
+
+    <h2>🔶 非臨床</h2>
+    <ul>
+      <li>醫生人手短缺</li>
+      <li>老化 UPS 系統</li>
+      <li>火災風險</li>
+      <li>工資輸入錯誤風險</li>
+    </ul>
+  `
+},
+
+fireNoPatient: {
+  title: "🔥 火警事故處理（無病人）",
+  html: `
+    <ol>
+      <li>保持鎮定，通知 I/C</li>
+      <li>打破火警鐘玻璃</li>
+      <li>大叫「火燭」</li>
+      <li>安全情況下使用滅火筒</li>
+      <li>致電緊急熱線／按 0</li>
+      <li>保安會撥 999</li>
+      <li>檢查房間並關門防煙</li>
+      <li>取疏散錦囊及名單</li>
+      <li>關氧氣及真空後撤離（勿用升降機）</li>
+    </ol>
+  `
+},
+
+fireWithPatient: {
+  title: "🔥 火警事故處理（有病人）",
+  html: `
+    <ol>
+      <li>首 6 步與「無病人」相同</li>
+      <li>點算病人並安排撤離</li>
+      <li>同事取疏散錦囊及檢查房間</li>
+      <li>LKB 進行橫向撤離</li>
+      <li>關氧氣及真空後撤離</li>
+    </ol>
+  `
+},
+
+vitalSigns: {
+  title: "🩺 病人正常生命表徵",
+  html: `
+    <ul>
+      <li>上壓：90–160</li>
+      <li>下壓：50–85</li>
+      <li>心跳：60–100</li>
+    </ul>
+  `
+},
+
+acupunctureSafety: {
+  title: "🪡 針灸安全",
+  html: `
+    <h2>🗑️ 棄置箱</h2>
+    <ul>
+      <li>用後即棄入 Sharps Box</li>
+      <li>不可徒手推壓</li>
+      <li>八成滿即更換</li>
+    </ul>
+
+    <h2>🪡 跌針處理</h2>
+    <ul>
+      <li>立即停止治療</li>
+      <li>用鑷子拾起並放入 Sharps Box</li>
+      <li>清潔環境</li>
+      <li>如病人受傷，按針刺意外流程處理</li>
+    </ul>
+  `
+}
+
+};
+
+function loadContent(key) {
+    document.getElementById("content").innerHTML = `
+        <h1>${data[key].title}</h1>
+        ${data[key].html}
+    `;
+}
+</script>
+
+</body>
+</html>
